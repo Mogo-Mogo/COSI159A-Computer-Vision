@@ -19,6 +19,7 @@ class Trainer:
     def train(
             self,
             train_loader: DataLoader,
+            test_loader: DataLoader,
             epochs: int,
             lr: float,
             save_dir: str,
@@ -45,6 +46,22 @@ class Trainer:
 
             elapse = time.time() - tik
             print("Epoch: [%d/%d]; Time: %.2f; Loss: %.5f" % (i + 1, epochs, elapse, loss_track.avg))
+
+            if i % 2 == 1:
+                print("Start testing...")
+                correct = 0
+                total = 0
+                with torch.no_grad():
+                    for data in test_loader:
+                        images, labels = data
+                        outputs = self._model(images)
+                        _, predicted = torch.max(outputs.data, 1)
+                        total += labels.size(0)
+                        correct += (predicted == labels).sum().item()
+
+                print('Accuracy of the network on the 10000 test images: %d %%' % (
+                    100 * correct / total))
+
 
         print("Training completed, saving model to %s" % save_dir)
         if not os.path.exists(save_dir):
