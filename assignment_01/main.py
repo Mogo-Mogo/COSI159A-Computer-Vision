@@ -9,9 +9,9 @@ from train import Trainer
 
 def parse_args():
     parser = argparse.ArgumentParser(description='mnist classification')
-    parser.add_argument('--epochs', type=int, default=20, help="training epochs")
-    parser.add_argument('--lr', type=float, default=8e-2, help="learning rate")
-    parser.add_argument('--bs', type=int, default=64, help="batch size")
+    parser.add_argument('--epochs', type=int, default=64, help="training epochs")
+    parser.add_argument('--lr', type=float, default=1e-2, help="learning rate")
+    parser.add_argument('--bs', type=int, default=32, help="batch size")
     args = parser.parse_args()
 
     return args

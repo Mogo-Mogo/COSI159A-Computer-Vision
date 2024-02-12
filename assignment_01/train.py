@@ -8,7 +8,7 @@ from torch import optim
 import torch.nn.functional as F
 
 from utils import AverageMeter
-
+from eval import Evaluator
 
 class Trainer:
     """ Trainer for MNIST classification """
@@ -27,8 +27,10 @@ class Trainer:
         """ Model training, TODO: consider adding model evaluation into the training loop """
 
         optimizer = optim.SGD(params=self._model.parameters(), lr=lr)
+        evaluator = Evaluator(model=self._model, test_loader=test_loader)
         loss_track = AverageMeter()
         self._model.train()
+        best_acc = 0.0
 
         print("Start training...")
         for i in range(epochs):
@@ -48,19 +50,14 @@ class Trainer:
             print("Epoch: [%d/%d]; Time: %.2f; Loss: %.5f" % (i + 1, epochs, elapse, loss_track.avg))
 
             if i % 2 == 1:
-                print("Start testing...")
-                correct = 0
-                total = 0
-                with torch.no_grad():
-                    for data in test_loader:
-                        images, labels = data
-                        outputs = self._model(images)
-                        _, predicted = torch.max(outputs.data, 1)
-                        total += labels.size(0)
-                        correct += (predicted == labels).sum().item()
-
-                print('Accuracy of the network on the 10000 test images: %d %%' % (
-                    100 * correct / total))
+                acc = evaluator.eval(model=self._model)
+                if best_acc < acc and acc > 97.0:
+                    best_acc = acc
+                    print("Best model found, saving to %s" % save_dir)
+                    if not os.path.exists(save_dir):
+                        os.makedirs(save_dir)
+                    torch.save(self._model.state_dict(), os.path.join(save_dir, "mnist.pth"))
+                
 
 
         print("Training completed, saving model to %s" % save_dir)
@@ -85,7 +82,6 @@ class Trainer:
 
         print('Accuracy of the network on the 10000 test images: %d %%' % (
             100 * correct / total))
- ##       self._model.eval()
         return
 
     def infer(self, sample: Tensor) -> int:
