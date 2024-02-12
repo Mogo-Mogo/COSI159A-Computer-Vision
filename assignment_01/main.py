@@ -6,7 +6,7 @@ import torchvision
 from model import Net
 from train import Trainer
 
-
+'''default values are the best performance that I was able to find.'''
 def parse_args():
     parser = argparse.ArgumentParser(description='mnist classification')
     parser.add_argument('--epochs', type=int, default=64, help="training epochs")
@@ -39,21 +39,11 @@ def main():
         shuffle=False,
     )
 
-    # evaluation should be run every few epochs (5?) durning training. Inference is taking the best overall model and testing it.
-    # mess with the defaults in parse_args() to find the best overall performance. Try lowering the learning rate.
-
     # trainer
     trainer = Trainer(model=model)
 
     # model training
     trainer.train(train_loader=train_loader, test_loader=test_loader, epochs=args.epochs, lr=args.lr, save_dir="save/")
-
-    # model evaluation
-##    trainer.eval(test_loader=test_loader)
-
-    # model inference
-    sample = None  # complete the sample here
-    trainer.infer(sample=sample)
 
     return
 
