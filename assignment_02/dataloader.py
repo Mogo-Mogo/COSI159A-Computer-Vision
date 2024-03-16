@@ -42,7 +42,7 @@ class LFW4Training(Dataset):
         img = Image.open(os.path.join(self.img_folder, img_path))
         img = self.transform(img)
 
-        name = img_path.split("/")[0]
+        name = img_path.split("\\")[0]
         label = self.name2label[name]
 
         return img, label

@@ -10,13 +10,13 @@ def parse_args():
     parser.add_argument('--seed', type=int, default=2021)
     parser.add_argument('--device', type=str, default="cuda:0")
 
-    parser.add_argument('--batch_size', type=int, default=128)
+    parser.add_argument('--batch_size', type=int, default=64)
     parser.add_argument('--epoch', type=int, default=100)
-    parser.add_argument('--lr', type=float, default=1e-3)
-    parser.add_argument('--eval_interval', type=int, default=20)
+    parser.add_argument('--lr', type=float, default=7e-4)
+    parser.add_argument('--eval_interval', type=int, default=4)
 
-    parser.add_argument('--train_file', type=str, default="./data/pairsDevTrain.txt")
-    parser.add_argument('--eval_file', type=str, default="./data/pairsDevTest.txt")
-    parser.add_argument('--img_folder', type=str, default="./data/lfw")
+    parser.add_argument('--train_file', type=str, default="assignment_02/data/pairsDevTrain.txt")
+    parser.add_argument('--eval_file', type=str, default="assignment_02/data/pairsDevTest.txt")
+    parser.add_argument('--img_folder', type=str, default="assignment_02/data/lfw")
 
     return parser.parse_args()
